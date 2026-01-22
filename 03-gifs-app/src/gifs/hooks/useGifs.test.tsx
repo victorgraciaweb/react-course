@@ -1,10 +1,14 @@
-import { describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
 import * as gifActions from '../actions/get-gifs-by-query.action';
 
 import { useGifs } from './useGifs';
 
 describe('useGifs', () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+  });
+
   test('Should return default values and methods', () => {
     const { result } = renderHook(() => useGifs());
 
@@ -22,6 +26,18 @@ describe('useGifs', () => {
     });
 
     expect(result.current.gifs.length).toBe(10);
+  });
+
+  test('Should check if term is empty in handleSearch', async () => {
+    const { result } = renderHook(() => useGifs());
+
+    const getGifsSpy = vi.spyOn(gifActions, 'getGifsByQuery');
+
+    await act(async () => {
+      await result.current.handleSearch('');
+    });
+
+    expect(getGifsSpy).not.toHaveBeenCalled();
   });
 
   test('Should return a list of gifs when handleTermClicked is called', async () => {
