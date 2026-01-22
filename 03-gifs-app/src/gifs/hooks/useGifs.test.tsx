@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { act, renderHook } from '@testing-library/react';
+import { act, render, renderHook } from '@testing-library/react';
 import * as gifActions from '../actions/get-gifs-by-query.action';
 
 import { useGifs } from './useGifs';
@@ -38,6 +38,22 @@ describe('useGifs', () => {
     });
 
     expect(getGifsSpy).not.toHaveBeenCalled();
+  });
+
+  test('Should check if term already exist in previousTerms', async () => {
+    const { result } = renderHook(() => useGifs());
+
+    const getGifsSpy = vi.spyOn(gifActions, 'getGifsByQuery');
+
+    await act(async () => {
+      await result.current.handleSearch('new-term');
+    });
+
+    await act(async () => {
+      await result.current.handleSearch('new-term');
+    });
+
+    expect(getGifsSpy).toHaveBeenCalledTimes(1);
   });
 
   test('Should return a list of gifs when handleTermClicked is called', async () => {
