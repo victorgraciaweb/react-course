@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { act, render, renderHook } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import * as gifActions from '../actions/get-gifs-by-query.action';
 
 import { useGifs } from './useGifs';
