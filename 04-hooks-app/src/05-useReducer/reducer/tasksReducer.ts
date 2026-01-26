@@ -62,7 +62,7 @@ export const taskReducer = (
 
     case 'DELETE_TODO': {
       const currentTodos = state.todos.filter(
-        (todo) => todo.id === action.payload,
+        (todo) => todo.id !== action.payload,
       );
 
       return {
