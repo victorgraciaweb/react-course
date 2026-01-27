@@ -49,7 +49,7 @@ export const TasksApp = () => {
     }
   };
 
-  const { todos, lenght: totalCount, completed: completedCount } = state;
+  const { todos, length: totalCount, completed: completedCount } = state;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4">

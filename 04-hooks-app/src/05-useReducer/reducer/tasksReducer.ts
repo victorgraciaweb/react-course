@@ -1,3 +1,5 @@
+import * as z from 'zod';
+
 interface Todo {
   id: number;
   text: string;
@@ -6,17 +8,42 @@ interface Todo {
 
 interface TaskState {
   todos: Todo[];
-  lenght: number;
+  length: number;
   completed: number;
   pending: number;
 }
 
+const TodoScheme = z.object({
+  id: z.number(),
+  text: z.string(),
+  completed: z.boolean(),
+});
+
+const TaskStateScheme = z.object({
+  todos: z.array(TodoScheme),
+  length: z.number(),
+  completed: z.number(),
+  pending: z.number(),
+});
+
 export const getTasksInitialState = (): TaskState => {
   const localStorageState = localStorage.getItem('tasks-state');
+
   if (!localStorageState) {
     return {
       todos: [],
-      lenght: 0,
+      length: 0,
+      completed: 0,
+      pending: 0,
+    };
+  }
+
+  const result = TaskStateScheme.safeParse(JSON.parse(localStorageState));
+  if (result.error) {
+    console.log(result.error);
+    return {
+      todos: [],
+      length: 0,
       completed: 0,
       pending: 0,
     };
@@ -44,7 +71,7 @@ export const taskReducer = (
       return {
         ...state,
         todos: [...state.todos, newTodo],
-        lenght: state.todos.length + 1,
+        length: state.todos.length + 1,
         pending: state.pending + 1,
       };
     }
@@ -73,7 +100,7 @@ export const taskReducer = (
       return {
         ...state,
         todos: currentTodos,
-        lenght: currentTodos.length,
+        length: currentTodos.length,
         completed: currentTodos.filter((todo) => todo.completed).length,
         pending: currentTodos.filter((todo) => !todo.completed).length,
       };
