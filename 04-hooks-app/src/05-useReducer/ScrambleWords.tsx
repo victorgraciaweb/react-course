@@ -2,11 +2,13 @@
 // Es necesario componentes de Shadcn/ui
 // https://ui.shadcn.com/docs/installation/vite
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { SkipForward, Play } from 'lucide-react';
+
+import confetti from 'canvas-confetti';
 
 const GAME_WORDS = [
   'REACT',
@@ -63,6 +65,8 @@ export const ScrambleWords = () => {
     console.log('Intento de adivinanza:', guess, currentWord);
 
     if (guess === currentWord) {
+      confetti({ particleCount: 100, spread: 120, origin: { y: 0.6 } });
+
       console.log('ACIERTO HAS ACERTADO');
       setPoints(points + 1);
       setScrambledWord(scrambleWord(words[0]));
