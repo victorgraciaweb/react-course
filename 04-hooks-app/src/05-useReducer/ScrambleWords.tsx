@@ -2,7 +2,7 @@
 // Es necesario componentes de Shadcn/ui
 // https://ui.shadcn.com/docs/installation/vite
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -69,7 +69,11 @@ export const ScrambleWords = () => {
   };
 
   const handlePlayAgain = () => {
-    console.log('Jugar de nuevo');
+    setSkipCounter(0);
+    setErrorCounter(0);
+    setPoints(0);
+    setScrambledWord(scrambleWord(words[0]));
+    setGuess('');
   };
 
   //! Si ya no hay palabras para jugar, se muestra el mensaje de fin de juego
