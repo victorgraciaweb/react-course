@@ -2,7 +2,7 @@
 // Es necesario componentes de Shadcn/ui
 // https://ui.shadcn.com/docs/installation/vite
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -61,11 +61,33 @@ export const ScrambleWords = () => {
     e.preventDefault();
     // Implementar lógica de juego
     console.log('Intento de adivinanza:', guess, currentWord);
+
+    if (guess === currentWord) {
+      console.log('ACIERTO HAS ACERTADO');
+      setPoints(points + 1);
+      setScrambledWord(scrambleWord(words[0]));
+      setCurrentWord(words[0]);
+      setGuess('');
+      if (points < 17) {
+        return;
+      }
+    }
+
+    console.log('ERROR NUMERO: ', errorCounter + 1);
+    console.log('PERMITIDOS: ', maxAllowErrors);
+    setErrorCounter(errorCounter + 1);
+
+    if (errorCounter >= maxAllowErrors - 1) {
+      setIsGameOver(true);
+      console.log('HAS PERDIDO');
+      return;
+    }
   };
 
   const handleSkip = () => {
     setSkipCounter(skipCounter + 1);
     setScrambledWord(scrambleWord(words[0]));
+    setCurrentWord(words[0]);
   };
 
   const handlePlayAgain = () => {
@@ -74,7 +96,20 @@ export const ScrambleWords = () => {
     setPoints(0);
     setScrambledWord(scrambleWord(words[0]));
     setGuess('');
+    setIsGameOver(false);
   };
+
+  useEffect(() => {
+    if (points === 17) {
+      console.log('HAS GANADO!!!');
+      setSkipCounter(0);
+      setErrorCounter(0);
+      setPoints(0);
+      setScrambledWord(scrambleWord(words[0]));
+      setGuess('');
+      setIsGameOver(false);
+    }
+  }, [points, words]);
 
   //! Si ya no hay palabras para jugar, se muestra el mensaje de fin de juego
   if (words.length === 0) {
