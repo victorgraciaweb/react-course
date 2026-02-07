@@ -2,7 +2,7 @@
 // Es necesario componentes de Shadcn/ui
 // https://ui.shadcn.com/docs/installation/vite
 
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -35,74 +35,24 @@ export const ScrambleWords = () => {
     totalWords,
   } = state;
 
-  /*const [words, setWords] = useState(shuffleArray(GAME_WORDS));
+  useEffect(() => {
+    if (points === 0) return;
 
-  const [currentWord, setCurrentWord] = useState(words[0]);
-  const [scrambledWord, setScrambledWord] = useState(scrambleWord(currentWord));
-  const [guess, setGuess] = useState('');
-  const [points, setPoints] = useState(0);
-  const [errorCounter, setErrorCounter] = useState(0);
-  const [maxAllowErrors, setMaxAllowErrors] = useState(3);
-
-  const [skipCounter, setSkipCounter] = useState(0);
-  const [maxSkips, setMaxSkips] = useState(3);
-
-  const [isGameOver, setIsGameOver] = useState(false);*/
+    confetti({ particleCount: 100, spread: 120, origin: { y: 0.6 } });
+  }, [points]);
 
   const handleGuessSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch({ type: 'CHECK_ANSWER' });
-
-    /*if (guess === currentWord) {
-      confetti({ particleCount: 100, spread: 120, origin: { y: 0.6 } });
-
-      console.log('ACIERTO HAS ACERTADO');
-      setPoints(points + 1);
-      setScrambledWord(scrambleWord(words[0]));
-      setCurrentWord(words[0]);
-      setGuess('');
-      if (points < 17) {
-        return;
-      }
-    }
-
-    console.log('ERROR NUMERO: ', errorCounter + 1);
-    console.log('PERMITIDOS: ', maxAllowErrors);
-    setErrorCounter(errorCounter + 1);
-
-    if (errorCounter >= maxAllowErrors - 1) {
-      setIsGameOver(true);
-      console.log('HAS PERDIDO');
-      return;
-    }*/
   };
 
   const handleSkip = () => {
-    /*setSkipCounter(skipCounter + 1);
-    setScrambledWord(scrambleWord(words[0]));
-    setCurrentWord(words[0]);*/
+    dispatch({ type: 'SKIP_WORD' });
   };
 
   const handlePlayAgain = () => {
-    /*setSkipCounter(0);
-    setErrorCounter(0);
-    setPoints(0);
-    setScrambledWord(scrambleWord(words[0]));
-    setGuess('');
-    setIsGameOver(false);*/
+    dispatch({ type: 'START_NEW_GAME', payload: getTasksInitialState() });
   };
-
-  /*useEffect(() => {
-    if (points === 17) {
-      console.log('HAS GANADO!!!');
-      setSkipCounter(0);
-      setErrorCounter(0);
-      setPoints(0);
-      setScrambledWord(scrambleWord(words[0]));
-      setGuess('');
-      setIsGameOver(false);
-    }
-  }, [points, words]);*/
 
   //! Si ya no hay palabras para jugar, se muestra el mensaje de fin de juego
   if (words.length === 0) {
