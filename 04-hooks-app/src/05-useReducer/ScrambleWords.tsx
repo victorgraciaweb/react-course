@@ -22,15 +22,17 @@ export const ScrambleWords = () => {
   );
 
   const {
+    words,
     currentWord,
     scrambledWord,
-    guess, points,
-    errorCounter, 
-    maxAllowErrors, 
-    skipCounter, 
-    maxSkips, 
+    guess,
+    points,
+    errorCounter,
+    maxAllowErrors,
+    skipCounter,
+    maxSkips,
     isGameOver,
-    totalWords
+    totalWords,
   } = state;
 
   /*const [words, setWords] = useState(shuffleArray(GAME_WORDS));
@@ -48,13 +50,11 @@ export const ScrambleWords = () => {
   const [isGameOver, setIsGameOver] = useState(false);*/
 
   const handleGuessSubmit = (e: React.FormEvent) => {
-    // Previene el refresh de la página
     e.preventDefault();
-    // Implementar lógica de juego
-    console.log('Intento de adivinanza:', guess, currentWord);
+    dispatch({ type: 'CHECK_ANSWER' });
 
-    if (guess === currentWord) {
-      /*confetti({ particleCount: 100, spread: 120, origin: { y: 0.6 } });
+    /*if (guess === currentWord) {
+      confetti({ particleCount: 100, spread: 120, origin: { y: 0.6 } });
 
       console.log('ACIERTO HAS ACERTADO');
       setPoints(points + 1);
@@ -74,25 +74,25 @@ export const ScrambleWords = () => {
       setIsGameOver(true);
       console.log('HAS PERDIDO');
       return;
-    }
+    }*/
   };
 
   const handleSkip = () => {
-    setSkipCounter(skipCounter + 1);
+    /*setSkipCounter(skipCounter + 1);
     setScrambledWord(scrambleWord(words[0]));
-    setCurrentWord(words[0]);
+    setCurrentWord(words[0]);*/
   };
 
   const handlePlayAgain = () => {
-    setSkipCounter(0);
+    /*setSkipCounter(0);
     setErrorCounter(0);
     setPoints(0);
     setScrambledWord(scrambleWord(words[0]));
     setGuess('');
-    setIsGameOver(false);
+    setIsGameOver(false);*/
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (points === 17) {
       console.log('HAS GANADO!!!');
       setSkipCounter(0);
@@ -102,7 +102,7 @@ export const ScrambleWords = () => {
       setGuess('');
       setIsGameOver(false);
     }
-  }, [points, words]);
+  }, [points, words]);*/
 
   //! Si ya no hay palabras para jugar, se muestra el mensaje de fin de juego
   if (words.length === 0) {
@@ -181,9 +181,8 @@ export const ScrambleWords = () => {
                     id="guess"
                     type="text"
                     value={guess}
-                    onChange={(e) =>{
-                      //setGuess(e.target.value.toUpperCase().trim())
-                      console.log(e.target.value)
+                    onChange={(e) => {
+                      dispatch({ type: 'SET_GUESS', payload: e.target.value });
                     }}
                     placeholder="Ingresa tu palabra..."
                     className="text-center text-lg font-semibold h-12 border-2 border-indigo-200 focus:border-indigo-500 transition-colors"

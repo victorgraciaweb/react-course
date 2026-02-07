@@ -12,7 +12,10 @@ export interface ScrambleWordsState {
   totalWords: number;
 }
 
-export type scrambleWordsAction = { type: 'TEST' } | { type: 'TEST_2' };
+export type scrambleWordsAction =
+  | { type: 'SET_GUESS'; payload: string }
+  | { type: 'CHECK_ANSWER' }
+  | { type: 'TEST' };
 
 const GAME_WORDS = [
   'REACT',
@@ -67,10 +70,35 @@ export const getTasksInitialState = (): ScrambleWordsState => {
 export const scrambledWordsReducer = (
   state: ScrambleWordsState,
   action: scrambleWordsAction,
-) => {
+): ScrambleWordsState => {
   switch (action.type) {
-    case 'TEST':
-      return state;
+    case 'SET_GUESS':
+      return {
+        // Alway we need to return a new state object, never mutate the existing state
+        ...state,
+        guess: action.payload.toUpperCase().trim(),
+      };
+
+    case 'CHECK_ANSWER':
+      if (state.currentWord === state.guess) {
+        const newWords = state.words.slice(1);
+
+        return {
+          ...state,
+          words: newWords,
+          points: state.points + 1,
+          guess: '',
+          currentWord: newWords[0],
+          scrambledWord: scrambleWord(newWords[0]),
+        };
+      }
+
+      return {
+        ...state,
+        guess: '',
+        errorCounter: state.errorCounter + 1,
+        isGameOver: state.errorCounter + 1 > state.maxAllowErrors,
+      };
 
     default:
       return state;
