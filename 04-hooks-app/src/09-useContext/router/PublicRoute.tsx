@@ -6,15 +6,15 @@ interface Props {
   children: ReactNode;
 }
 
-export const PrivateRoute = ({ children }: Props) => {
+export const PublicRoute = ({ children }: Props) => {
   const { authStatus } = useContext(UserContext);
 
   if (authStatus === 'checking') {
-    return null; // o un loader
+    return null;
   }
 
-  if (authStatus !== 'authenticated') {
-    return <Navigate to="/login" replace />;
+  if (authStatus === 'authenticated') {
+    return <Navigate to="/profile" replace />;
   }
 
   return <>{children}</>;

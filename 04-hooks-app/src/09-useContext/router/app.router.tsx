@@ -4,6 +4,7 @@ import { AboutPage } from '../pages/about/AboutPage';
 import { ProfilePage } from '../pages/profile/ProfilePage';
 import { LoginPage } from '../pages/auth/LoginPage';
 import { PrivateRoute } from './PrivateRoute';
+import { PublicRoute } from './PublicRoute';
 
 export const appRouter = createBrowserRouter([
   {
@@ -12,12 +13,19 @@ export const appRouter = createBrowserRouter([
   },
   {
     path: '/profile',
-    //element: <ProfilePage />,
-    element: <PrivateRoute element={<ProfilePage />} />,
+    element: (
+      <PrivateRoute>
+        <ProfilePage />
+      </PrivateRoute>
+    ),
   },
   {
     path: '/login',
-    element: <LoginPage />,
+    element: (
+      <PublicRoute>
+        <LoginPage />
+      </PublicRoute>
+    ),
   },
   {
     path: '*',
