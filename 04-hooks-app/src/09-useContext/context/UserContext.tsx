@@ -36,7 +36,7 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
 
     setUser(user);
     setAuthStatus('authenticated');
-    //localStorage.setItem('userId', userId.toString());
+    localStorage.setItem('userId', userId.toString());
     return true;
   };
 
@@ -44,10 +44,10 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
     console.log('logout');
     setAuthStatus('not-authenticated');
     setUser(null);
-    //localStorage.removeItem('userId');
+    localStorage.removeItem('userId');
   };
 
-  /*useEffect(() => {
+  useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
     if (storedUserId) {
       handleLogin(+storedUserId);
@@ -55,7 +55,7 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
     }
 
     handleLogout();
-  }, []);*/
+  }, []);
 
   return (
     <UserContext
