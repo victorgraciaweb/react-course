@@ -2,8 +2,25 @@ import { SearchControls } from './ui/SearchControls';
 import { CustomJumbotron } from '@/components/custom/CustomJumbotron';
 import { HeroStats } from '@/heroes/components/HeroStats';
 import { CustomBreadcrumbs } from '@/components/custom/CustomBreadcrumbs';
+import { HeroGrid } from '@/heroes/components/HeroGrid';
+import { searchHeroesAction } from '@/heroes/actions/search-heros.action';
+import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router';
 
 export const SearchPage = () => {
+  const [searchParams] = useSearchParams();
+  const name = searchParams.get('name') ?? '';
+
+  const { data: heroes = [] } = useQuery({
+    queryKey: ['search', { name }],
+    queryFn: () => searchHeroesAction({ name }),
+    staleTime: 1000 * 60 * 5,
+  });
+
+  if (!heroes) {
+    return <h3>Loading...</h3>;
+  }
+
   return (
     <>
       {/* Header */}
@@ -26,6 +43,17 @@ export const SearchPage = () => {
 
       {/* Filter and search */}
       <SearchControls />
+
+      {/* Hero grid*/}
+      {heroes.length === 0 ? (
+        <div className="bg-white rounded-lg p-8 text-center shadow-sm border">
+          <p className="text-gray-500 text-lg">
+            No se encontraron resultados para "<strong>{name}</strong>"
+          </p>
+        </div>
+      ) : (
+        <HeroGrid heroes={heroes} />
+      )}
     </>
   );
 };
