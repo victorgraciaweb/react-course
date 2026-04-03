@@ -7,7 +7,6 @@ import { AdminLayout } from '@/admin/layouts/AdminLayout';
 import { HomePage } from '@/heroes/pages/home/HomePage';
 import { HeroPage } from '@/heroes/pages/hero/HeroPage';
 import { SearchPage } from '@/heroes/pages/search/SearchPage';
-import type { JSX } from 'react/jsx-runtime';
 
 const AdminPage = lazy(() => import('@/admin/pages/AdminPage'));
 
@@ -46,15 +45,3 @@ export const appRouter = createHashRouter([
     ],
   },
 ]);
-function createHashRouterç(
-  arg0: {
-    path: string;
-    element: JSX.Element;
-    children: (
-      | { index: boolean; element: JSX.Element }
-      | { path: string; element: JSX.Element }
-    )[];
-  }[],
-) {
-  throw new Error('Function not implemented.');
-}
