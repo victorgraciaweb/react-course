@@ -111,4 +111,21 @@ describe('useHeroSummary', () => {
       villainCount: 7,
     });*/
   });
+
+  test('Should return error state if API call fails', async () => {
+    const mockError = new Error('Fetch api error');
+
+    mockGetSummaryAction.mockRejectedValue(mockError);
+
+    const { result } = renderHook(() => useHeroSummary(), {
+      wrapper: tanStackCustomProvider(),
+    });
+
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
+
+    expect(result.current.isError).toBe(true);
+    expect(result.current.error?.message).toBe('Fetch api error');
+  });
 });
