@@ -1,36 +1,37 @@
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router';
+import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CustomLogo } from '@/components/custom/CustomLogo';
-import { Link, useNavigate } from 'react-router';
-import { loginAction } from '@/auth/actions/login.action';
-import { toast } from 'sonner';
-import { useState } from 'react';
+
+import { useAuthStore } from '@/auth/store/auth.store';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  //const { login } = useAuthStore();
+  const { login } = useAuthStore();
 
   const [isPosting, setIsPosting] = useState(false);
 
   const handleLogin = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setIsPosting(true);
 
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
-    try {
-      const data = await loginAction(email, password);
-      localStorage.setItem('token', data.token);
+    const isValid = await login(email, password);
+
+    if (isValid) {
       navigate('/');
-    } catch (error) {
-      toast.error('Correo o contraseña no válidos');
+      return;
     }
 
+    toast.error('Correo o contraseña no válidos');
     setIsPosting(false);
   };
 
