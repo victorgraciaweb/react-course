@@ -1,5 +1,7 @@
 import { TableCell, TableRow } from '@/components/ui/table';
 import type { Size } from '@/interfaces/product.interface';
+import { currencyFormatter } from '@/lib/currency-formatter';
+import { PencilIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
 interface AdminProductItemProps {
@@ -23,7 +25,6 @@ export const AdminProductItem = ({
 }: AdminProductItemProps) => {
   return (
     <TableRow>
-      <TableCell className="font-medium">{id}</TableCell>
       <TableCell>
         <img
           src={image}
@@ -31,14 +32,22 @@ export const AdminProductItem = ({
           className="w-20 h-20 object-cover rounded-md"
         />
       </TableCell>
-      <TableCell>{name}</TableCell>
-      <TableCell>{price}</TableCell>
+      <TableCell>
+        <Link
+          to={`/admin/products/${id}`}
+          className="hover:text-blue-500 underline"
+        >
+          {name}
+        </Link>
+      </TableCell>
+      <TableCell>{currencyFormatter(price)}</TableCell>
       <TableCell>{category}</TableCell>
-      <TableCell>{stock}</TableCell>
+      <TableCell>{stock} stock</TableCell>
       <TableCell>{sizes.join(', ')}</TableCell>
       <TableCell className="text-right">
-        {/* <Link to={`t-shirt-teslo`}>Editar</Link> */}
-        <Link to={`/admin/products/t-shirt-teslo`}>Editar</Link>
+        <Link to={`/admin/products/${id}`}>
+          <PencilIcon className="w-4 h-4 text-blue-500" />
+        </Link>
       </TableCell>
     </TableRow>
   );

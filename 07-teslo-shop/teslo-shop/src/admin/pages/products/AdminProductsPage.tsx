@@ -5,9 +5,14 @@ import { CustomPagination } from '@/components/custom/CustomPagination';
 import { Button } from '@/components/ui/button';
 import { useProducts } from '@/shop/hooks/useProducts';
 import { AdminProductsList } from '@/admin/components/AdminProductsList';
+import { CustomFullScreenLoading } from '@/components/custom/CustomFullScreenLoading';
 
 export const AdminProductsPage = () => {
-  const { data } = useProducts();
+  const { data, isLoading } = useProducts();
+
+  if (isLoading) {
+    return <CustomFullScreenLoading />;
+  }
 
   return (
     <>

@@ -17,7 +17,6 @@ export const AdminProductsList = ({ products }: Props) => {
     <Table className="bg-white p-10 shadow-xs border border-gray-200 mb-10">
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">ID</TableHead>
           <TableHead>Imagen</TableHead>
           <TableHead>Nombre</TableHead>
           <TableHead>Precio</TableHead>
@@ -30,7 +29,6 @@ export const AdminProductsList = ({ products }: Props) => {
       <TableBody>
         {products.map((product) => (
           <AdminProductItem
-            key={product.id}
             id={product.id}
             name={product.title}
             price={product.price}
