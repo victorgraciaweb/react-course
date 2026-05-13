@@ -2,29 +2,25 @@ import React, { useRef, type KeyboardEvent } from 'react';
 import { Search, Bell, MessageSquare, Settings } from 'lucide-react';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { Button } from '@/components/ui/button';
-import { useSearchParams } from 'react-router';
+import { useNavigate } from 'react-router';
 import { Input } from '@/components/ui/input';
 
 export const AdminHeader: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const { user, logout } = useAuthStore();
-
   const inputRef = useRef<HTMLInputElement>(null);
-  const query = searchParams.get('query') || '';
+  const navigate = useNavigate();
 
   const handleSearch = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key !== 'Enter') return;
+
     const query = inputRef.current?.value;
 
-    const newSearchParams = new URLSearchParams();
-
     if (!query) {
-      newSearchParams.delete('query');
-    } else {
-      newSearchParams.set('query', inputRef.current!.value);
+      navigate('/admin/products');
+      return;
     }
 
-    setSearchParams(newSearchParams);
+    navigate(`/admin/products?query=${query}`);
   };
 
   return (
