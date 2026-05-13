@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, type KeyboardEvent } from 'react';
 import { Search, Bell, MessageSquare, Settings } from 'lucide-react';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { Button } from '@/components/ui/button';
