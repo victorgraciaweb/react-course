@@ -29,6 +29,7 @@ export const AdminProductsList = ({ products }: Props) => {
       <TableBody>
         {products.map((product) => (
           <AdminProductItem
+            key={product.id}
             id={product.id}
             name={product.title}
             price={product.price}
