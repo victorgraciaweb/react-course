@@ -37,8 +37,6 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
     { icon: HelpCircle, label: 'Ayuda' },
   ];
 
-  console.log({ pathname });
-
   const isActiveRoute = (to: string) => {
     if (pathname.includes('/admin/products/') && to === '/admin/products') {
       return true;

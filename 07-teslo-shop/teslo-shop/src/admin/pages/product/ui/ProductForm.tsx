@@ -1,9 +1,13 @@
-import { AdminTitle } from '@/admin/components/AdminTitle';
-import { Button } from '@/components/ui/button';
-import type { Product } from '@/interfaces/product.interface';
 import { X, SaveAll, Tag, Upload } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router';
+import { useForm } from 'react-hook-form';
+
+import { Button } from '@/components/ui/button';
+
+import type { Product } from '@/interfaces/product.interface';
+import { AdminTitle } from '@/admin/components/AdminTitle';
+import { cn } from '@/lib/utils';
 
 interface Props {
   title: string;
@@ -11,12 +15,17 @@ interface Props {
   product: Product;
 }
 
-const availableSizes = ['XS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXL'];
+const availableSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
 export const ProductForm = ({ title, subTitle, product }: Props) => {
-  console.log({ product });
-
   const [dragActive, setDragActive] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ defaultValues: product });
+  //const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
 
   const addTag = () => {
     if (newTag.trim() && !product.tags.includes(newTag.trim())) {
@@ -73,8 +82,12 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
     console.log(files);
   };
 
+  const onSubmit = (product: Product) => {
+    console.log(product);
+  };
+
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex justify-between items-center">
         <AdminTitle title={title} subTitle={subTitle} />
         <div className="flex justify-end mb-10 gap-4">
@@ -111,9 +124,20 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                     type="text"
                     // value={product.title}
                     // onChange={(e) => handleInputChange('title', e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    {...register('title', { required: true })}
+                    className={cn(
+                      'w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200',
+                      {
+                        'border-red-500': errors.title,
+                      },
+                    )}
                     placeholder="Título del producto"
                   />
+                  {errors.title && (
+                    <p className="text-red-500 text-sm">
+                      El título es requerido
+                    </p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -123,10 +147,11 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                     </label>
                     <input
                       type="number"
-                      value={product.price}
+                      //value={product.price}
                       // onChange={(e) =>
                       //   handleInputChange('price', parseFloat(e.target.value))
                       // }
+                      {...register('price')}
                       className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="Precio del producto"
                     />
@@ -142,6 +167,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                       // onChange={(e) =>
                       //   handleInputChange('stock', parseInt(e.target.value))
                       // }
+                      {...register('stock')}
                       className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="Stock del producto"
                     />
@@ -156,6 +182,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                     type="text"
                     // value={product.slug}
                     // onChange={(e) => handleInputChange('slug', e.target.value)}
+                    {...register('slug')}
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     placeholder="Slug del producto"
                   />
@@ -170,6 +197,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                     // onChange={(e) =>
                     //   handleInputChange('gender', e.target.value)
                     // }
+                    {...register('gender')}
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   >
                     <option value="men">Hombre</option>
@@ -188,6 +216,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                     // onChange={(e) =>
                     //   handleInputChange('description', e.target.value)
                     // }
+                    {...register('description')}
                     rows={5}
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
                     placeholder="Descripción del producto"
@@ -414,6 +443,6 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
           </div>
         </div>
       </div>
-    </>
+    </form>
   );
 };
